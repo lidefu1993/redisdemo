@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ldf.redis.mapper.ITestMapper">
+
+    <insert id="addUser">
+        INSERT into userinfo (id, name, age, birth, sex)
+        VALUES
+        (
+        #{userInfo.id},
+        #{userInfo.name},
+        #{userInfo.age},
+        #{userInfo.birth},
+        #{userInfo.sex}
+        )
+    </insert>
+
+    <update id="updateUser">
+        UPDATE userinfo
+        SET
+        <trim suffixOverrides=",">
+            <if test="userInfo.name != null">
+                NAME = #{userInfo.name},
+            </if>
+            <if test="userInfo.age != 0">
+                AGE = #{userInfo.age},
+            </if>
+            <if test="userInfo.birth != null">
+                BIRTH = #{userInfo.birth},
+            </if>
+                SEX = #{userInfo.sex}
+        </trim>
+        WHERE ID = #{userInfo.id}
+    </update>
+
+    <select id="selectUserList" resultType="com.ldf.redis.domain.UserInfo">
+        SELECT * FROM userinfo
+        WHERE NAME like CONCAT('%',#{name},'%')
+    </select>
+</mapper>
